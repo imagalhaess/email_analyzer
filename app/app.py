@@ -150,28 +150,15 @@ def generate_automatic_response(sugestao, categoria, email_content, sender_email
         Gere uma resposta completa e personalizada agora:
         """
         
-        logging.info(f"Gerando resposta automática para categoria: {categoria}")
-        logging.info(f"Sugestão: {sugestao}")
-        
-        print(f"DEBUG: Gerando resposta automática para categoria: {categoria}")
-        print(f"DEBUG: Sugestão: {sugestao}")
-        
         response = client.generate_content(prompt)
-        
-        logging.info(f"Tipo da resposta: {type(response)}")
-        print(f"DEBUG: Tipo da resposta: {type(response)}")
         
         # Verifica diferentes estruturas de resposta
         if response and hasattr(response, 'text') and response.text:
-            logging.info("Resposta automática gerada com sucesso via response.text")
-            print(f"DEBUG: Resposta automática gerada: {response.text}")
             return response.text.strip()
         elif response and hasattr(response, 'candidates') and response.candidates:
             candidate = response.candidates[0]
             if hasattr(candidate, 'content') and hasattr(candidate.content, 'parts'):
                 text_content = candidate.content.parts[0].text
-                logging.info("Resposta automática gerada com sucesso via candidates")
-                print(f"DEBUG: Resposta automática gerada via candidates: {candidate.content.parts[0].text}")
                 return candidate.content.parts[0].text.strip()
         else:
             return f"""Olá,
@@ -192,7 +179,6 @@ Equipe MailMind"""
     except Exception as e:
         logging.error(f"Erro ao gerar resposta automática: {e}")
         logging.error(f"Tipo de erro: {type(e).__name__}")
-        print(f"DEBUG: Erro ao gerar resposta automática: {e}")
         
         # Fallback para resposta padrão em caso de erro
         return f"""Olá,
@@ -449,24 +435,10 @@ Cliente satisfeito""",
 
 
 def create_app() -> Flask:
-    try:
-        print("🚀 Iniciando create_app...")
-        load_dotenv()
-        print("✅ load_dotenv() executado")
-        
-        config = load_config()
-        print("✅ load_config() executado")
-        
-        client = GeminiClient(api_key=config.gemini_api_key, model_name=config.model_name)
-        print("✅ GeminiClient criado")
-        
-        service = EmailAnalyzerService(client=client)
-        print("✅ EmailAnalyzerService criado")
-    except Exception as e:
-        print(f"❌ Erro na inicialização: {e}")
-        import traceback
-        traceback.print_exc()
-        raise
+    load_dotenv()
+    config = load_config()
+    client = GeminiClient(api_key=config.gemini_api_key, model_name=config.model_name)
+    service = EmailAnalyzerService(client=client)
     # Sistema de fallback: SendGrid → Gmail SMTP → Simulação
     mailer = None
     
@@ -835,15 +807,11 @@ Este email foi automaticamente encaminhado pelo sistema MailMind."""
                     if categoria.lower() == "spam":
                         action_result = "🚫 Nenhuma resposta automática foi enviada (spam detectado)"
                         logging.info(f"Spam detectado - nenhuma resposta enviada para: {sender_email}")
-                        print(f"DEBUG: Spam detectado - categoria: {categoria}")
                     else:
-                        print(f"DEBUG: Email improdutivo não-spam - categoria: {categoria}")
                         # Para outros emails IMPRODUTIVOS: responder automaticamente para o REMETENTE ORIGINAL
                         if sender_email:
-                            print(f"DEBUG: Chamando generate_automatic_response para categoria: {categoria}")
                             # Gerar resposta automática personalizada usando IA
                             response_body = generate_automatic_response(sugestao, categoria, raw_text)
-                            print(f"DEBUG: Resposta gerada: {response_body[:100]}...")
                         
                             # Tentar enviar com fallback automático
                             email_sent = False
@@ -1000,13 +968,11 @@ Este email foi automaticamente encaminhado pelo sistema MailMind."""
         # Serve o index.html do React
         return send_from_directory('static', 'index.html')
 
-    print("✅ Flask app configurado com sucesso")
     return app
 
 def main():
     """Função principal para executar a aplicação."""
     port = int(os.getenv("PORT", 8001))
-    print(f"🚀 Iniciando MailMind em http://localhost:{port}")
     app.run(host="0.0.0.0", port=port, debug=False)
 
 
