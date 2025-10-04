@@ -45,12 +45,11 @@ CURATOR_ADDRESS=curador@empresa.com
 ### 3. **Execução**
 
 ```bash
-# Desenvolvimento
-python app.py
+# Desenvolvimento (com debug e recarregamento automático)
+flask --app wsgi:application --debug run
 
 # Produção (com Gunicorn)
-pip install gunicorn
-gunicorn -w 4 -b 0.0.0.0:8000 app:create_app()
+gunicorn wsgi:application
 ```
 
 ## 🏗️ Estrutura do Projeto

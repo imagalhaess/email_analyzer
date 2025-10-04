@@ -69,34 +69,25 @@ PORT=8000
 
 #### 4. **Deploy Automático**
 
-- Railway detectará automaticamente que é um projeto Python
-- Usará o `requirements.txt` para instalar dependências
-- Executará `python app.py` automaticamente
+- O Railway usará o `requirements.txt` para instalar as dependências.
+- **Importante**: Você precisa configurar o comando de inicialização. Vá para `Settings` -> `Deploy` e no campo `Start Command` insira: `gunicorn wsgi:application`
 
 #### 5. **Acessar Aplicação**
 
 - Railway fornecerá uma URL como: `https://seu-projeto-production.up.railway.app`
 - A aplicação estará disponível 24/7
 
-## 🔧 Arquivos Necessários
+## 🔧 Arquivo de Configuração (Opcional)
 
-### `Procfile` (já existe)
+### `Procfile`
 
-```
-web: python app.py
+Se você preferir usar um `Procfile` em vez de configurar o comando no painel do Railway, crie um arquivo chamado `Procfile` (sem extensão) na raiz do seu projeto com o seguinte conteúdo:
+
+```procfile
+web: gunicorn wsgi:application
 ```
 
-### `requirements.txt` (já existe)
-
-```
-Flask==3.0.0
-google-generativeai==0.3.2
-python-dotenv==1.0.0
-pdfminer.six==20231228
-requests==2.31.0
-pytest==7.4.3
-gunicorn==21.2.0
-```
+O Railway detectará este arquivo e usará o comando especificado.
 
 ## 🧪 Testando o Deploy
 

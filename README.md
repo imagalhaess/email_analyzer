@@ -59,8 +59,8 @@ Sistema de análise e curadoria de e-mails usando IA (Google Gemini) para classi
 ### Interface Web:
 
 ```bash
-python -m app.app
-# Acesse: http://localhost:8001
+python wsgi.py
+# Acesse: http://localhost:8000
 ```
 
 ### CLI (exemplos):
