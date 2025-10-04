@@ -449,10 +449,24 @@ Cliente satisfeito""",
 
 
 def create_app() -> Flask:
-    load_dotenv()
-    config = load_config()
-    client = GeminiClient(api_key=config.gemini_api_key, model_name=config.model_name)
-    service = EmailAnalyzerService(client=client)
+    try:
+        print("🚀 Iniciando create_app...")
+        load_dotenv()
+        print("✅ load_dotenv() executado")
+        
+        config = load_config()
+        print("✅ load_config() executado")
+        
+        client = GeminiClient(api_key=config.gemini_api_key, model_name=config.model_name)
+        print("✅ GeminiClient criado")
+        
+        service = EmailAnalyzerService(client=client)
+        print("✅ EmailAnalyzerService criado")
+    except Exception as e:
+        print(f"❌ Erro na inicialização: {e}")
+        import traceback
+        traceback.print_exc()
+        raise
     # Sistema de fallback: SendGrid → Gmail SMTP → Simulação
     mailer = None
     
@@ -986,11 +1000,8 @@ Este email foi automaticamente encaminhado pelo sistema MailMind."""
         # Serve o index.html do React
         return send_from_directory('static', 'index.html')
 
+    print("✅ Flask app configurado com sucesso")
     return app
-
-
-# Exportar app para gunicorn
-app = create_app()
 
 def main():
     """Função principal para executar a aplicação."""

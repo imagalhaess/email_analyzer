@@ -133,12 +133,26 @@ O sistema segue princípios de Clean Code:
 
 ## 🚀 Deploy
 
-Para produção, use um servidor WSGI como Gunicorn:
+### Railway (Recomendado) ⭐
 
-```bash
-pip install gunicorn
-gunicorn -w 4 -b 0.0.0.0:8000 app:create_app()
-```
+**Mais simples e rápido:**
+
+1. **Acesse**: https://railway.app
+2. **Login** com GitHub
+3. **"New Project"** → **"Deploy from GitHub repo"**
+4. **Selecione** este repositório
+5. **Configure variáveis** (só `GEMINI_API_KEY` é obrigatória)
+6. **Settings** → **Deploy** → **Custom Start Command**:
+   ```bash
+   gunicorn wsgi:application --bind 0.0.0.0:$PORT
+   ```
+7. **Pronto!** Deploy automático a cada push
+
+### Outras Plataformas
+
+- **Heroku**: Precisa de `Procfile`
+- **Render**: Precisa de `render.yaml`
+- **Railway**: Só precisa do código + configuração visual
 
 ## 🚀 Próximos Passos
 

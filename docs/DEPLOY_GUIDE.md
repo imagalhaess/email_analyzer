@@ -6,9 +6,10 @@
 
 - ✅ **Gratuito** para projetos pequenos
 - ✅ **Deploy automático** via GitHub
-- ✅ **Configuração simples** com arquivos mínimos
+- ✅ **Configuração 100% visual** - sem arquivos extras
 - ✅ **Suporte nativo** a Python/Flask
 - ✅ **Variáveis de ambiente** fáceis de configurar
+- ✅ **Custom Start Command** na interface
 
 ### 2. **Heroku** (Alternativa)
 
@@ -16,13 +17,14 @@
 - ✅ **Muito popular** e bem documentado
 - ✅ **Suporte completo** a Python
 - ⚠️ **Mais complexo** de configurar
+- ⚠️ **Precisa de Procfile**
 
 ### 3. **Render** (Alternativa)
 
 - ✅ **Gratuito** com limitações
 - ✅ **Interface moderna**
 - ✅ **Deploy automático**
-- ⚠️ **Menos popular** que Railway/Heroku
+- ⚠️ **Precisa de render.yaml**
 
 ## 🎯 Deploy Recomendado: Railway
 
@@ -67,27 +69,36 @@ CURATOR_ADDRESS=curador@suaempresa.com
 PORT=8000
 ```
 
-#### 4. **Deploy Automático**
+#### 4. **Configurar Start Command**
 
-- O Railway usará o `requirements.txt` para instalar as dependências.
-- **Importante**: Você precisa configurar o comando de inicialização. Vá para `Settings` -> `Deploy` e no campo `Start Command` insira: `gunicorn wsgi:application`
+- Vá em **Settings** → **Deploy**
+- No campo **"Custom Start Command"** adicione:
+  ```bash
+  gunicorn wsgi:application --bind 0.0.0.0:$PORT
+  ```
 
-#### 5. **Acessar Aplicação**
+#### 5. **Deploy Automático**
 
-- Railway fornecerá uma URL como: `https://seu-projeto-production.up.railway.app`
+- O Railway usará o `requirements.txt` para instalar as dependências
+- Deploy acontece automaticamente a cada push no GitHub
 - A aplicação estará disponível 24/7
 
-## 🔧 Arquivo de Configuração (Opcional)
+#### 6. **Acessar Aplicação**
 
-### `Procfile`
+- Railway fornecerá uma URL como: `https://seu-projeto-production.up.railway.app`
+- ✅ **Pronto!** Sua aplicação está no ar!
 
-Se você preferir usar um `Procfile` em vez de configurar o comando no painel do Railway, crie um arquivo chamado `Procfile` (sem extensão) na raiz do seu projeto com o seguinte conteúdo:
+## 📁 Arquivos Essenciais vs Opcionais
 
-```procfile
-web: gunicorn wsgi:application
-```
+### ✅ **Arquivos ESSENCIAIS** (obrigatórios)
+- `requirements.txt` - Dependências Python
+- `wsgi.py` - Entry point para Gunicorn
+- `app/` - Código da aplicação
 
-O Railway detectará este arquivo e usará o comando especificado.
+### ⚠️ **Arquivos OPCIONAIS** (não necessários no Railway)
+- `Procfile` - Só necessário para Heroku
+- `render.yaml` - Só necessário para Render  
+- `runtime.txt` - Railway detecta Python automaticamente
 
 ## 🧪 Testando o Deploy
 
