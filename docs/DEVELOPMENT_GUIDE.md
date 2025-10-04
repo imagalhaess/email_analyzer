@@ -1,6 +1,6 @@
-# 👨‍💻 Guia de Desenvolvimento - MailMind
+# Guia de Desenvolvimento - MailMind
 
-## 🚀 Início Rápido
+## Início Rápido
 
 ### 1. **Configuração do Ambiente**
 
@@ -46,44 +46,36 @@ CURATOR_ADDRESS=curador@empresa.com
 
 ```bash
 # Desenvolvimento (com debug e recarregamento automático)
+python wsgi.py
+
+# Ou usando Flask diretamente
 flask --app wsgi:application --debug run
+```
+
+## Deploy
+
+### Railway (Recomendado)
+
+1. **Acesse**: https://railway.app
+2. **Login** com GitHub
+3. **"New Project"** → **"Deploy from GitHub repo"**
+4. **Configure variáveis** (só `GEMINI_API_KEY` é obrigatória)
+5. **Settings** → **Deploy** → **Custom Start Command**:
+   ```bash
+   gunicorn wsgi:application --bind 0.0.0.0:$PORT
+   ```
+
+### Outras Plataformas
+
+- **Heroku**: Use `Procfile`
+- **Render**: Use `render.yaml`
 
 # Produção (com Gunicorn)
+# Produção (usado pela plataforma de deploy)
 gunicorn wsgi:application
 ```
 
-## 🏗️ Estrutura do Projeto
-
-```
-email_analyzer/
-├── app.py                    # 🎯 Aplicação Flask principal
-├── main.py                   # 📝 Exemplo CLI (demonstração)
-├── config.py                 # ⚙️ Configurações centralizadas
-├── requirements.txt          # 📦 Dependências Python
-├── .env.example             # 🔐 Template de variáveis
-├── README.md                 # 📖 Documentação principal
-├── ARCHITECTURE.md           # 🏛️ Arquitetura do sistema
-├── BUSINESS_RULES.md         # 📋 Regras de negócio
-├── TECHNICAL_DECISIONS.md    # 🔧 Decisões técnicas
-├── DEVELOPMENT_GUIDE.md      # 👨‍💻 Este arquivo
-├── LGPD_COMPLIANCE.md        # 🛡️ Conformidade LGPD
-├── DEPLOY_GUIDE.md           # 🚀 Guia de Deploy
-├── providers/                # 🌐 Provedores externos
-│   └── gemini_client.py     # 🤖 Cliente Google Gemini
-├── services/                 # 🧠 Lógica de negócio
-│   └── email_analyzer.py    # 📊 Serviço de análise
-├── utils/                    # 🛠️ Utilitários
-│   ├── text_preprocess.py   # 📝 Pré-processamento NLP
-│   └── email_sender.py      # 📤 Envio de emails
-├── static/                  # 🎨 Frontend HTML/CSS/JS
-│   ├── index.html           # 🏠 Página principal
-│   ├── css/style.css        # 🎨 Estilos
-│   └── js/app.js            # ⚡ JavaScript
-└── tests/                   # 🧪 Testes unitários
-    └── __init__.py
-```
-
-## 🔧 Desenvolvimento
+## Desenvolvimento
 
 ### **Convenções de Código**
 
@@ -296,7 +288,7 @@ def processar_email(email: str):
         raise
 ```
 
-## 🔄 Fluxo de Desenvolvimento
+## Fluxo de Desenvolvimento
 
 ### **1. Nova Funcionalidade**
 
@@ -363,7 +355,7 @@ git commit -m "refactor: melhora arquitetura do serviço de análise"
 # 4. Push e PR
 ```
 
-## 🧪 Testes e Qualidade
+## Testes e Qualidade
 
 ### **Tipos de Testes**
 
@@ -437,7 +429,7 @@ bandit -r .                 # Verificar vulnerabilidades
 safety check               # Verificar dependências
 ```
 
-## 🚀 Deploy
+## Deploy
 
 ### **Desenvolvimento**
 
@@ -475,7 +467,26 @@ FLASK_DEBUG=False
 LOG_LEVEL=INFO
 ```
 
-## 📚 Recursos Úteis
+## Deploy
+
+### Railway (Recomendado)
+
+1. **Acesse**: https://railway.app
+2. **Login** com GitHub
+3. **"New Project"** → **"Deploy from GitHub repo"**
+4. **Configure variáveis** (só `GEMINI_API_KEY` é obrigatória)
+5. **Settings** → **Deploy** → **Custom Start Command**:
+   ```bash
+   gunicorn wsgi:application --bind 0.0.0.0:$PORT
+   ```
+
+### Outras Plataformas
+
+- **Heroku**: Use `Procfile`
+- **Render**: Use `render.yaml`
+- **Railway**: Configuração 100% visual
+
+## Recursos Úteis
 
 ### **Documentação**
 
@@ -496,7 +507,7 @@ LOG_LEVEL=INFO
 - GitLens
 - Thunder Client (para testar APIs)
 
-## 🆘 Troubleshooting
+## Troubleshooting
 
 ### **Problemas Comuns**
 
