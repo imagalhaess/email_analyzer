@@ -3,9 +3,12 @@
 WSGI entry point for the Email Analyzer application.
 """
 import sys
+import os
+
+# Adiciona o diretório atual ao Python path
+sys.path.insert(0, os.path.dirname(__file__))
 
 # Importa e cria a aplicação
-# Gunicorn encontrará o módulo 'app' automaticamente a partir do diretório raiz.
 from app import create_app
 
 # Cria a aplicação para WSGI
